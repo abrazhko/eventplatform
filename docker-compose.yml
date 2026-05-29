@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: postgres-db
+    restart: always
+
+    environment:
+      POSTGRES_DB: events
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+
+    ports:
+      - "5432:5432"
+
+  eventplatform:
+    build:
+      context: ./EventPlatform
+      dockerfile: Dockerfile
+
+    container_name: eventplatform
+
+    restart: always
+
+    depends_on:
+      - postgres
+
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=events;Username=postgres;Password=1234
+
+    ports:
+      - "8080:8080"

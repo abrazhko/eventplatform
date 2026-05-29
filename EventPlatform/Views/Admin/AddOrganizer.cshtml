@@ -1,0 +1,21 @@
+@{
+    Layout = "_AdminLayout";
+}
+
+<h2>Добавить организатора</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Имя</label>
+        <input type="text" name="fullName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Пароль</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-success">Создать</button>
+</form>

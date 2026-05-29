@@ -1,0 +1,42 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <!-- Все мероприятия -->
+        <item
+            android:id="@+id/nav_all_events"
+            android:title="Все мероприятия"/>
+
+        <!-- Категории -->
+        <item
+            android:id="@+id/nav_concert"
+            android:title="Концерт"/>
+
+        <item
+            android:id="@+id/nav_exhibition"
+            android:title="Выставка"/>
+
+        <item
+            android:id="@+id/nav_conference"
+            android:title="Конференция"/>
+
+        <item
+            android:id="@+id/nav_workshop"
+            android:title="Воркшоп"/>
+
+    </group>
+
+    <!-- Другие пункты -->
+    <item
+        android:id="@+id/nav_my_tickets"
+        android:title="Мои билеты"/>
+
+    <item
+        android:id="@+id/nav_favorites"
+        android:title="Избранное"/>
+
+    <item
+        android:id="@+id/nav_profile"
+        android:title="Профиль"/>
+
+</menu>

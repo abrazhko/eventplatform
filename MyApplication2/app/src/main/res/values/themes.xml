@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <!-- themes.xml -->
+    <style name="Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Основные цвета твоего приложения -->
+        <item name="colorPrimary">#0A1931</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSurface">#F6FAFD</item>
+        <item name="colorOnSurface">#0A1931</item>
+        <item name="android:statusBarColor">#0A1931</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="DarkToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:textColorSecondary">#FFFFFF</item>
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="navigationIconTint">#FFFFFF</item>
+        <item name="titleTextColor">#FFFFFF</item>
+    </style>
+</resources>

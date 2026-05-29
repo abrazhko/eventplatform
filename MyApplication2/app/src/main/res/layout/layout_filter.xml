@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="#F6FAFD"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Фильтры"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#0A1931"
+        android:layout_marginBottom="12dp"/>
+
+    <Spinner
+        android:id="@+id/filterCategory"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/spinner_background"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/filterDateFrom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint=" Дата от"
+        android:background="@drawable/edit_text_background"
+        android:focusable="false"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/filterDateTo"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint=" Дата до"
+        android:background="@drawable/edit_text_background"
+        android:focusable="false"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/filterPriceMin"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint=" Цена от"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/filterPriceMax"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint=" Цена до"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="10dp"/>
+
+    <CheckBox
+        android:id="@+id/filterFree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Только бесплатные"
+        android:textColor="#0A1931"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/applyFilter"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:text="Применить"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1A3D63"
+            android:layout_marginEnd="6dp"/>
+
+        <Button
+            android:id="@+id/resetFilter"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Сбросить"
+            android:textColor="#1A3D63"
+            android:background="@drawable/button_outline"
+            android:layout_marginStart="6dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

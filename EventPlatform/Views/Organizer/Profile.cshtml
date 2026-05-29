@@ -1,0 +1,70 @@
+@model User
+@{
+    Layout = "_OrganizerLayout";
+}
+
+<div class="container-fluid px-4">
+
+    <!-- Заголовок страницы -->
+    <div class="mb-5 text-center">
+        <h2 class="mb-1">👤 Профиль организатора</h2>
+        <span class="text-muted">
+            Просмотр личной информации
+        </span>
+    </div>
+
+    <!-- Карточка -->
+    <div class="card shadow-sm p-4 col-md-6 mx-auto">
+
+        <!-- имя + инициалы -->
+        <div class="d-flex align-items-center mb-4">
+
+            <div class="me-3">
+
+                <span class="display-4 rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                      style="width:60px; height:60px;">
+
+                    @Model.FullName.Substring(0,1).ToUpper()
+
+                </span>
+
+            </div>
+
+            <div>
+
+                <h4 class="mb-1">
+                    @Model.FullName
+                </h4>
+
+                <p class="text-muted mb-0">
+                    @Model.Email
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- роль -->
+        <div class="mb-4">
+
+            <span class="badge bg-success fs-6">
+                Организатор
+            </span>
+
+        </div>
+
+        <!-- выход -->
+        <div class="d-grid">
+
+            <a href="/Account/Logout"
+               class="btn btn-danger btn-md px-5 py-2">
+
+                🚪 Выйти
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

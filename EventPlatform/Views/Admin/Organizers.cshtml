@@ -1,0 +1,76 @@
+@model List<EventPlatform.Models.User>
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+
+    <!-- PAGE HEADER -->
+    <div class="mb-4">
+        <h2 class="mb-3"> 🎤 Организаторы</h2>
+        <a class="btn btn-primary " href="/Admin/AddOrganizer">
+            Добавить организатора
+        </a>
+    </div>
+
+    <!-- ALERTS -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger mb-3">
+            @TempData["Error"]
+        </div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mb-3">
+            @TempData["Success"]
+        </div>
+    }
+
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm">
+        <div class="table-responsive p-3">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Имя</th>
+                        <th>Email</th>
+                        <th>Статус</th>
+                        <th class="text-end">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model)
+                    {
+                        <tr>
+                            <td>@o.FullName</td>
+                            <td>@o.Email</td>
+                            <td>@(o.IsBlocked ? "Заблокирован" : "Активен")</td>
+                            <td class="text-end">
+
+                                <form method="post" action="/Admin/BlockOrganizer/@o.Id" class="d-inline">
+                                    @if (o.IsBlocked)
+                                    {
+                                        <button class="btn btn-success btn-sm">Разблокировать</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-warning btn-sm">Заблокировать</button>
+                                    }
+                                </form>
+
+                                <form method="post" action="/Admin/DeleteOrganizer/@o.Id" class="d-inline">
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Удалить организатора?')">
+                                        Удалить
+                                    </button>
+                                </form>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

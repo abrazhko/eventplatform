@@ -1,0 +1,118 @@
+@model EventPlatform.Models.Event
+@{
+    Layout = "_AdminLayout";
+}
+@{
+    var error = TempData["Error"] as string;
+    var success = TempData["Success"] as string;
+}
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @error
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(success))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @success
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="container-fluid px-4">
+
+    <h2 class="mb-4">✏️ Редактировать мероприятие</h2>
+
+    <form method="post" enctype="multipart/form-data">
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+
+            <label>Текущее изображение</label><br/>
+
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl"
+                    width="120"
+                    style="border-radius:8px"/>
+            }
+
+        </div>
+
+        <div class="mb-3">
+            <label>Новое изображение</label>
+            <input type="file"
+                name="image"
+                class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label>Название</label>
+            <input class="form-control" asp-for="Title" />
+        </div>
+
+        <div class="mb-3">
+            <label>Описание</label>
+            <textarea class="form-control" asp-for="Description"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label>Организатор</label>
+            <select class="form-control" asp-for="OrganizerId">
+                @foreach (var o in ViewBag.Organizers)
+                {
+                    <option value="@o.Id">@o.FullName</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Категория</label>
+            <select class="form-control" asp-for="CategoryId">
+                @foreach (var c in ViewBag.Categories)
+                {
+                    <option value="@c.Id">@c.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Дата начала</label>
+            <input type="datetime-local"
+                   class="form-control"
+                   name="StartDate"
+                   value="@Model.StartDate.ToLocalTime().ToString("yyyy-MM-ddTHH:mm")" />
+        </div>
+
+        <div class="mb-3">
+            <label>Дата окончания</label>
+            <input type="datetime-local"
+                   class="form-control"
+                   name="EndDate"
+                   value="@Model.EndDate.ToLocalTime().ToString("yyyy-MM-ddTHH:mm")" />
+        </div>
+
+        <div class="mb-3">
+            <label>Место</label>
+            <input class="form-control" asp-for="Location" />
+        </div>
+
+        <div class="mb-3">
+            <label>Цена</label>
+            <input class="form-control" asp-for="Price" />
+        </div>
+
+        <div class="mb-3">
+            <label>Лимит</label>
+            <input class="form-control" asp-for="Capacity" />
+        </div>
+
+        <button class="btn btn-success">Сохранить</button>
+        <a href="/Admin/Events" class="btn btn-secondary">Назад</a>
+
+    </form>
+
+</div>

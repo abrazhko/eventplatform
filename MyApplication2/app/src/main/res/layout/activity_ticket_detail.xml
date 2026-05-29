@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6FAFD"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Заголовок -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Электронный билет"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#0A1931"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- QR-код -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp"
+            android:layout_marginBottom="32dp">
+
+            <ImageView
+                android:id="@+id/ivQrCode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="24dp"
+                android:background="#FFFFFF"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Название события -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#0A1931"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Дата -->
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#0A1931"
+            android:gravity="center"
+            android:layout_marginBottom="6dp"/>
+
+        <!-- Локация -->
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#0A1931"
+            android:gravity="center"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- Статус -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvStatus"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="8dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="#1A3D63"/>
+
+        <!-- Инструкция -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Покажите QR-код на входе"
+            android:textSize="16sp"
+            android:textColor="#1A3D63"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</ScrollView>

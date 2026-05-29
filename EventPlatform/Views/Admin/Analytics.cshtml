@@ -1,0 +1,414 @@
+@model EventPlatform.Models.AnalyticsViewModel
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2 class="mb-0">📈 Глобальная аналитика</h2>
+
+</div>
+
+<!--KPI-->
+
+<div class="row g-3 mb-4">
+
+<div class="col-lg-2 col-md-4 col-sm-6">
+<div class="card shadow-sm h-100 text-center p-3">
+<h6 class="text-muted">Пользователи</h6>
+<h3>@Model.TotalUsers</h3>
+</div>
+</div>
+
+<div class="col-lg-2 col-md-4 col-sm-6">
+<div class="card shadow-sm h-100 text-center p-3">
+<h6 class="text-muted">Активные</h6>
+<h3>@Model.ActiveUsers</h3>
+</div>
+</div>
+
+<div class="col-lg-2 col-md-4 col-sm-6">
+<div class="card shadow-sm h-100 text-center p-3">
+<h6 class="text-muted">Мероприятия</h6>
+<h3>@Model.TotalEvents</h3>
+</div>
+</div>
+
+<div class="col-lg-2 col-md-4 col-sm-6">
+<div class="card shadow-sm h-100 text-center p-3">
+<h6 class="text-muted">Билеты</h6>
+<h3>@Model.TotalTickets</h3>
+</div>
+</div>
+
+<div class="col-lg-2 col-md-4 col-sm-6">
+<div class="card shadow-sm h-100 text-center p-3">
+<h6 class="text-muted">Доход</h6>
+<h3>@Model.TotalRevenue.ToString("N0") ₽</h3>
+</div>
+</div>
+
+<div class="col-lg-2 col-md-4 col-sm-6">
+<div class="card shadow-sm h-100 text-center p-3">
+<h6 class="text-muted">Средняя цена</h6>
+<h3>@Model.AvgTicketPrice.ToString("N0") ₽</h3>
+</div>
+</div>
+
+</div>
+
+<div class="row g-3 mb-4">
+
+<div class="col-lg-6">
+<div class="card shadow-sm p-3">
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+<h5 class="mb-0">Рост пользователей</h5>
+
+<select class="form-select form-select-sm w-auto"
+onchange="updateUsers(this.value)">
+<option value="7">7 дней</option>
+<option value="30" selected>30 дней</option>
+<option value="90">3 месяца</option>
+<option value="365">1 год</option>
+</select>
+
+</div>
+
+<div style="height:320px">
+<canvas id="usersChart"></canvas>
+</div>
+
+</div>
+</div>
+
+
+<div class="col-lg-6">
+<div class="card shadow-sm p-3">
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+<h5 class="mb-0">Доход платформы</h5>
+
+<select class="form-select form-select-sm w-auto"
+onchange="updateRevenue(this.value)">
+<option value="7">7 дней</option>
+<option value="30" selected>30 дней</option>
+<option value="90">3 месяца</option>
+<option value="365">1 год</option>
+</select>
+
+</div>
+
+<div style="height:320px">
+<canvas id="revenueChart"></canvas>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="row g-3 mb-4">
+
+<div class="col-lg-6">
+<div class="card shadow-sm p-3">
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+<h5 class="mb-0">Продажи билетов</h5>
+
+<select class="form-select form-select-sm w-auto"
+onchange="updateTickets(this.value)">
+<option value="7">7 дней</option>
+<option value="30" selected>30 дней</option>
+<option value="90">3 месяца</option>
+<option value="365">1 год</option>
+</select>
+
+</div>
+
+<div style="height:320px">
+<canvas id="ticketsChart"></canvas>
+</div>
+
+</div>
+</div>
+
+
+<div class="col-lg-6">
+<div class="card shadow-sm p-3">
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+<h5 class="mb-0">Популярность категорий</h5>
+
+<select class="form-select form-select-sm w-auto"
+onchange="updateCategories(this.value)">
+<option value="7">7 дней</option>
+<option value="30" selected>30 дней</option>
+<option value="90">3 месяца</option>
+<option value="365">1 год</option>
+</select>
+
+</div>
+
+<div style="height:320px">
+<canvas id="categoryChart"></canvas>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="row g-3">
+
+<div class="col-lg-6">
+<div class="card shadow-sm">
+
+<div class="card-header">
+<h5 class="mb-0">🏆 Топ организаторов</h5>
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-hover mb-0">
+
+<thead class="table-light">
+<tr>
+<th>Организатор</th>
+<th>Мероприятий</th>
+<th>Билеты</th>
+<th>Доход</th>
+</tr>
+</thead>
+
+<tbody>
+@foreach (var o in Model.TopOrganizers)
+{
+<tr>
+<td>@o.Organizer</td>
+<td>@o.Events</td>
+<td>@o.Tickets</td>
+<td>@o.Revenue.ToString("N0") ₽</td>
+</tr>
+}
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+</div>
+
+
+<div class="col-lg-6">
+<div class="card shadow-sm">
+
+<div class="card-header">
+<h5 class="mb-0">🔥 Топ мероприятий</h5>
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-hover mb-0">
+
+<thead class="table-light">
+<tr>
+<th>Мероприятие</th>
+<th>Организатор</th>
+<th>Билеты</th>
+<th>Доход</th>
+</tr>
+</thead>
+
+<tbody>
+@foreach (var e in Model.TopEvents)
+{
+<tr>
+<td>@e.EventTitle</td>
+<td>@e.Organizer</td>
+<td>@e.Tickets</td>
+<td>@e.Revenue.ToString("N0") ₽</td>
+</tr>
+}
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+<!--CHART JS-->
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+let usersChart;
+let ticketsChart;
+let revenueChart;
+let categoryChart;
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const gradientRevenue = document.getElementById("revenueChart").getContext('2d');
+    const revenueGradient = gradientRevenue.createLinearGradient(0, 0, 0, 300);
+    revenueGradient.addColorStop(0, 'rgba(255, 193, 7, 0.5)');
+    revenueGradient.addColorStop(1, 'rgba(255, 193, 7, 0)');
+
+    usersChart = new Chart(document.getElementById("usersChart"), {
+        type: "line",
+        data: {
+            labels: [],
+            datasets: [{
+                label: "Пользователи",
+                data: [],
+                borderColor: "#0d6efd",
+                backgroundColor: "rgba(13,110,253,0.1)",
+                tension: 0.3, // сглаживание линии
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: true },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { precision:0 } }
+            }
+        }
+    });
+
+    ticketsChart = new Chart(document.getElementById("ticketsChart"), {
+        type: "bar",
+        data: { labels: [], datasets:[{
+            label:"Билеты",
+            data:[],
+            backgroundColor:"#198754",
+            borderRadius: 6
+        }] },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { precision:0 } }
+            }
+        }
+    });
+
+    revenueChart = new Chart(document.getElementById("revenueChart"), {
+        type: "line",
+        data: {
+            labels: [],
+            datasets:[{
+                label:"Доход",
+                data:[],
+                borderColor:"#ffc107",
+                backgroundColor: revenueGradient,
+                tension:0.4,
+                fill:true,
+                pointRadius:4,
+                pointHoverRadius:6
+            }]
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins: {
+                legend: { display: true },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { callback: val => val + ' ₽' } }
+            }
+        }
+    });
+
+    categoryChart = new Chart(document.getElementById("categoryChart"), {
+        type: "doughnut",
+        data: {
+            labels: [],
+            datasets:[{
+                data:[],
+                backgroundColor: [
+                    '#0d6efd','#198754','#dc3545','#ffc107','#6f42c1','#fd7e14','#20c997'
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins: {
+                legend: { position: 'right' },
+                tooltip: { callbacks: {
+                    label: function(context){
+                        let label = context.label || '';
+                        let value = context.raw || 0;
+                        return `${label}: ${value} билетов`;
+                    }
+                }}
+            }
+        }
+    });
+
+    // первоначальная загрузка
+    updateUsers(30);
+    updateTickets(30);
+    updateRevenue(30);
+    updateCategories(30);
+
+});
+
+// AJAX 
+
+async function updateUsers(days){
+    const res = await fetch(`/Admin/GetUserStats?days=${days}`);
+    const data = await res.json();
+    usersChart.data.labels = data.labels;
+    usersChart.data.datasets[0].data = data.data;
+    usersChart.update();
+}
+
+async function updateTickets(days){
+    const res = await fetch(`/Admin/GetTicketStats?days=${days}`);
+    const data = await res.json();
+    ticketsChart.data.labels = data.labels;
+    ticketsChart.data.datasets[0].data = data.data;
+    ticketsChart.update();
+}
+
+async function updateRevenue(days){
+    const res = await fetch(`/Admin/GetRevenueStats?days=${days}`);
+    const data = await res.json();
+    revenueChart.data.labels = data.labels;
+    revenueChart.data.datasets[0].data = data.data;
+    revenueChart.update();
+}
+
+async function updateCategories(days){
+    const res = await fetch(`/Admin/GetCategoryStats?days=${days}`);
+    const data = await res.json();
+    categoryChart.data.labels = data.labels;
+    categoryChart.data.datasets[0].data = data.data;
+    categoryChart.update();
+}
+
+</script>

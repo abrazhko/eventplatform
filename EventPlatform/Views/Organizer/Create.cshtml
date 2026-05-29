@@ -1,0 +1,81 @@
+@model EventPlatform.Models.Event
+@{
+    Layout = "_OrganizerLayout";
+    var categories = ViewBag.Categories as List<EventPlatform.Models.Category>;
+}
+@{
+    var error = TempData["Error"] as string;
+    var success = TempData["Success"] as string;
+}
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @error
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(success))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @success
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h2>Создать мероприятие</h2>
+
+<form method="post" enctype="multipart/form-data">
+
+    <div class="mb-3">
+        <label>Изображение</label>
+        <input type="file" name="image" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label>Название</label>
+        <input type="text" name="title" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Описание</label>
+        <textarea name="description" class="form-control" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Дата начала</label>
+        <input type="datetime-local" name="startDate" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Дата окончания</label>
+        <input type="datetime-local" name="endDate" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Место</label>
+        <input type="text" name="location" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Категория</label>
+        <select name="categoryId" class="form-select" required>
+            @foreach(var c in categories)
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Цена</label>
+        <input type="number" step="0.01" name="price" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Лимит билетов</label>
+        <input type="number" name="capacity" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Создать</button>
+</form>

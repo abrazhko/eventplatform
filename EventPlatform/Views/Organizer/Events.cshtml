@@ -1,0 +1,232 @@
+@model List<EventPlatform.Models.Event>
+@{
+    Layout = "_OrganizerLayout";
+}
+
+@{
+    var error = TempData["Error"] as string;
+    var success = TempData["Success"] as string;
+}
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @error
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(success))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @success
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<style>
+.table-responsive {
+    overflow: visible;
+}
+</style>
+
+<div class="container-fluid px-4">
+
+    <!-- PAGE HEADER -->
+    <div class="mb-4">
+        <h2 class="mb-3">📅 Мои мероприятия</h2>
+        <div class="card shadow-sm mb-4 p-3">
+
+            <form method="get">
+
+                <div class="row g-2">
+
+                    <div class="col-md-4">
+
+                        <input name="search"
+                            value="@Context.Request.Query["search"]"
+                            class="form-control"
+                            placeholder="Поиск по названию или месту..." />
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button class="btn btn-outline-primary w-100">
+                            🔍 Найти
+                        </button>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <a href="/Organizer/Events"
+                        class="btn btn-outline-secondary w-100">
+
+                            Сброс
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+        <a class="btn btn-primary" href="/Organizer/Create">Создать мероприятие</a>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="card shadow-sm mb-4">
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Фото</th>
+                        <th>Название</th>
+                        <th>Начало</th>
+                        <th>Окончание</th>
+                        <th>Место</th>
+                        <th>Цена</th>
+                        <th>Лимит билетов</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var e in Model)
+                    {
+                        <tr>
+                            <td>
+
+                            @if (!string.IsNullOrEmpty(e.ImageUrl))
+                            {
+                                <img src="@e.ImageUrl"
+                                    width="70"
+                                    height="70"
+                                    style="object-fit:cover;
+                                            border-radius:6px"/>
+                            }
+
+                            </td>
+                            <td>@e.Title</td>
+                            <td>@e.StartDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@e.EndDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@e.Location</td>
+                            <td>@e.Price.ToString("C")</td>
+                            <td>@e.Capacity</td>
+                            <td>
+                                @if (e.Status == EventStatus.Published)
+                                {
+                                    <span class="badge bg-success">Published</span>
+                                }
+                                else if (e.Status == EventStatus.Draft)
+                                {
+                                    <span class="badge bg-secondary">Draft</span>
+                                }
+                                else if (e.Status == EventStatus.Cancelled)
+                                {
+                                    <span class="badge bg-danger">Cancelled</span>
+                                }
+                            </td>
+                            <td class="text-end">
+
+                                <div class="dropdown">
+
+                                    <button class="btn btn-sm btn-light border"
+                                            type="button"
+                                            data-bs-toggle="dropdown">
+                                        ⋯
+                                    </button>
+
+                                    <ul class="dropdown-menu dropdown-menu-end">
+
+                                        <!-- 1. Редактировать -->
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href="/Organizer/Edit/@e.Id">
+                                                ✏️ Редактировать
+                                            </a>
+                                        </li>
+
+                                        <!-- 2. Статус -->
+                                        @if (e.Status == EventStatus.Draft)
+                                        {
+                                            <li>
+                                                <form method="post" action="/Organizer/Publish/@e.Id">
+                                                    <button class="dropdown-item text-success">
+                                                        ✔ Опубликовать
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+
+                                        @if (e.Status == EventStatus.Published)
+                                        {
+                                            <li>
+                                                <form method="post" action="/Organizer/Cancel/@e.Id">
+                                                    <button class="dropdown-item text-warning">
+                                                        ⏸ Отменить
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+
+                                        @if (e.Status == EventStatus.Cancelled)
+                                        {
+                                            <li>
+                                                <form method="post" action="/Organizer/ReturnToDraft/@e.Id">
+                                                    <button class="dropdown-item text-secondary">
+                                                        ↩ Вернуть в черновик
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+
+                                        <li><hr class="dropdown-divider"></li>
+
+                                        <!-- 3. Билеты -->
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href="/Organizer/Tickets?eventId=@e.Id">
+                                                🎟 Билеты
+                                            </a>
+                                        </li>
+
+                                        <!-- 4. Аналитика -->
+                                        <li>
+                                            <a class="dropdown-item"
+                                            href="/Organizer/Stats/@e.Id">
+                                                📊 Статистика
+                                            </a>
+                                        </li>
+
+                                        <li><hr class="dropdown-divider"></li>
+
+                                        <!-- 5. Удалить -->
+                                        <li>
+                                            <form method="post" action="/Organizer/Delete/@e.Id">
+                                                <button class="dropdown-item text-danger">
+                                                    🗑 Удалить
+                                                </button>
+                                            </form>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</div>

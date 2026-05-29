@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+
+<title>Admin Panel</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+<style>
+
+body{
+background:#f5f6fa;
+}
+
+.sidebar{
+min-height:100vh;
+background:#212529;
+color:white;
+padding:20px;
+position:sticky;
+top:0;
+}
+
+.sidebar a{
+color:white;
+text-decoration:none;
+display:block;
+padding:10px;
+border-radius:6px;
+margin-bottom:5px;
+}
+
+.sidebar a:hover{
+background:#343a40;
+}
+
+.content{
+padding:30px;
+}
+
+.card{
+border:none;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-md-2 sidebar">
+
+<h4 class="mb-4">⚙ Admin</h4>
+
+<a href="/Admin/Dashboard">📊 Дашборд</a>
+
+<a href="/Admin/Analytics">📈 Глобальная аналитика</a>
+
+<a href="/Admin/Events">📅 Мероприятия</a>
+
+<a href="/Admin/AddEvent">➕ Создать событие</a>
+
+<a href="/Admin/Categories">🏷 Категории</a>
+
+
+<a href="/Admin/Organizers">🎤 Организаторы</a>
+
+<a href="/Admin/AddOrganizer">➕ Добавить организатора</a>
+
+<a href="/Admin/Profile">👤 Профиль</a>
+
+<a href="/Account/Logout" class="text-danger">🚪 Выйти</a>
+
+</div>
+
+<div class="col-md-10 content">
+
+@RenderBody()
+
+</div>
+
+</div>
+
+</div>
+
+@RenderSection("Scripts", required: false)
+
+</body>
+</html>

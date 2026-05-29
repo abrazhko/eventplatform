@@ -1,0 +1,133 @@
+@model OrganizerDashboardViewModel
+@{
+    Layout = "_OrganizerLayout";
+}
+
+<h2 class="mb-4">📊 Dashboard</h2>
+
+<!-- KPI -->
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm">
+            🎤 Мои события<br><b>@Model.TotalEvents</b>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm">
+            ✅ Опубликовано<br><b>@Model.PublishedEvents</b>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm">
+            🎟 Продано<br><b>@Model.TotalTickets</b>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3 shadow-sm">
+            💰 Доход (месяц)<br><b>@Model.MonthlyRevenue.ToString("C")</b>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mb-4">
+
+    <div class="col-md-6">
+        <div class="card p-3 shadow-sm">
+            🎟 Сегодня продано: <b>@Model.TicketsToday</b>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card p-3 shadow-sm">
+            📅 Ближайшее событие:
+            <b>@Model.NearestEvent?.Title </b>
+        </div>
+    </div>
+
+</div>
+
+<!-- График -->
+<div class="card p-4 mb-4 shadow-sm">
+    <h5>Продажи за 7 дней</h5>
+    <canvas id="salesChart"></canvas>
+</div>
+
+<!-- События -->
+<div class="card p-4 mb-4 shadow-sm">
+    <h5>Ближайшие мероприятия</h5>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Дата</th>
+                <th>Продано</th>
+                <th>Лимит</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var e in Model.UpcomingEvents)
+        {
+            <tr>
+                <td>@e.Title</td>
+                <td>@e.StartDate.ToLocalTime().ToString("dd.MM HH:mm")</td>
+                <td>@e.Tickets.Count</td>
+                <td>@e.Capacity</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<!-- Покупки -->
+<div class="card p-4 shadow-sm">
+    <h5>Последние покупки</h5>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Событие</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var t in Model.LatestTickets)
+        {
+            <tr>
+                <td>@t.User.FullName</td>
+                <td>@t.Event.Title</td>
+                <td>@t.PurchasedAt.ToLocalTime().ToString("dd.MM HH:mm")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('salesChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: @Html.Raw(Json.Serialize(Model.Last7Days)),
+        datasets: [{
+            label: 'Продано билетов',
+            data: @Html.Raw(Json.Serialize(Model.TicketsLast7Days)),
+            tension: 0.3,
+            fill: true,
+            borderWidth: 2,
+            backgroundColor: "rgba(13,110,253,0.1)",
+            borderColor: "#0d6efd"
+        }]
+    }
+});
+</script>
+}

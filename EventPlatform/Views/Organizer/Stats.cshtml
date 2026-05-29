@@ -1,0 +1,109 @@
+@model EventPlatform.Models.EventStatsViewModel
+@{
+    Layout = "_OrganizerLayout";
+}
+
+<div class="container-fluid px-4">
+
+    <h2 class="mb-4">📊 Аналитика мероприятия</h2>
+    <h4 class="mb-4">@Model.EventTitle</h4>
+
+    <!-- KPI -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card p-3 shadow-sm text-center">
+                <div class="text-muted">Лимит билетов</div>
+                <h4>@Model.Capacity</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card p-3 shadow-sm text-center">
+                <div class="text-muted">Продано</div>
+                <h4>@Model.SoldTickets</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card p-3 shadow-sm text-center">
+                <div class="text-muted">Осталось</div>
+                <h4>@Model.RemainingTickets</h4>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card p-3 shadow-sm text-center">
+                <div class="text-muted">Доход</div>
+                <h4>@Model.Revenue.ToString("C")</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- charts -->
+    <div class="row g-4">
+        <div class="col-lg-6 col-md-12">
+            <div class="card p-4 shadow-sm">
+                <h5 class="mb-3">Динамика продаж</h5>
+                <canvas id="lineChart" style="min-height: 300px;"></canvas>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+            <div class="card p-4 shadow-sm text-center">
+                <h5 class="mb-3">Заполнение зала (%)</h5>
+                <canvas id="pieChart" style="max-width: 300px; margin: auto;"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const labels = @Html.Raw(Json.Serialize(Model.Labels));
+const sales = @Html.Raw(Json.Serialize(Model.Sales));
+
+// Динамика продаж с градиентом и точками
+const ctxLine = document.getElementById("lineChart").getContext("2d");
+const gradient = ctxLine.createLinearGradient(0, 0, 0, 300);
+gradient.addColorStop(0, 'rgba(0,123,255,0.4)');
+gradient.addColorStop(1, 'rgba(0,123,255,0)');
+
+new Chart(ctxLine, {
+    type: "line",
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Продано билетов",
+            data: sales,
+            borderWidth: 3,
+            borderColor: "#007bff",
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: "#007bff",
+            pointRadius: 3,
+            pointHoverRadius: 5
+        }]
+    }
+    
+});
+
+new Chart(document.getElementById("pieChart"), {
+    type: "pie",
+    data: {
+        labels: ["Продано", "Осталось"],
+        datasets: [{
+            data: [@Model.SoldTickets, @Model.RemainingTickets],
+            backgroundColor: ["#28a745", "#6c757d"],
+            hoverOffset: 10
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
+});
+</script>

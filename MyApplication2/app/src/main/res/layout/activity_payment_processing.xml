@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F6FAFD"
+    android:gravity="center"
+    android:padding="40dp">
+
+    <ProgressBar
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:indeterminate="true"
+        android:indeterminateTint="#0A1931" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Обработка платежа..."
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#0A1931"
+        android:layout_marginTop="48dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Это займёт несколько секунд"
+        android:textSize="16sp"
+        android:textColor="#4A7FA7"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
