@@ -64,14 +64,11 @@ http://localhost:8080
 ## Структура проекта
 
 DiplomProject
-│
-├── EventPlatform/      ASP.NET Core веб-приложение и REST API
-│
-├── MyApplication2/     Android-приложение для участников
-│
-├── docker-compose.yml
-│
-└── README.md
+
+  EventPlatform/      ASP.NET Core веб-приложение и REST API
+  MyApplication2/     Android-приложение для участников
+  docker-compose.yml
+  README.md
 
 ## Требования
 
